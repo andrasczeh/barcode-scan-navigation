@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barcode Scan Navigation</title>
+  <style>
+    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    
+    #last-scan { font-size: 1.2em; color: #333; }
+    #browser-frame { width: 100vw; height: 100vh; border: none; display: none; }
+  </style>
+</head>
+<body>
+  <div id="info">Scan a barcode to navigate to its URL.</div>
+  <div id="last-scan"></div>
+  <iframe id="browser-frame" style="display:none;"></iframe>
+  <script>
+    let buffer = '';
+    let lastTime = Date.now();
+    const scanTimeout = 50; // ms between chars to consider as barcode
+    const lastScanDiv = document.getElementById('last-scan');
+    const browserFrame = document.getElementById('browser-frame');
+    const info = document.getElementById('info');
+
+    document.addEventListener('keydown', function(e) {
+      const now = Date.now();
+      if (now - lastTime > scanTimeout) buffer = '';
+      lastTime = now;
+      if (e.key === 'Enter') {
+        if (buffer.length > 3) {
+          lastScanDiv.textContent = 'Navigating to: ' + buffer;
+          browserFrame.style.display = 'block';
+          browserFrame.src = buffer;
+          info.style.display = 'none';
+          lastScanDiv.style.display = 'none';
+        }
+        buffer = '';
+      } else if (e.key.length === 1) {
+        buffer += e.key;
+      }
+    });
+  </script>
+</body>
+</html>

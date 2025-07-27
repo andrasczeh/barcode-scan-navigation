@@ -1,0 +1,9 @@
+{
+  "name": "barcode-scan-navigation",
+  "version": "1.0.0",
+  "description": "A simple web application to demonstrate barcode scanning navigation using Playwright.",
+  "main": "index.html",
+  "dependencies": {
+    "@playwright/test": "^1.54.1"
+  }
+}
